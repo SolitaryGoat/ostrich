@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { ReactElement } from 'react';
 import { Container } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import UserMenu from './user-menu';
 
 interface Props {
   children: ReactElement;
@@ -27,18 +28,21 @@ const Layout = ({ children }: Props) => {
 
   return (
     <Container>
-      <p className="text-end">
-        {languages.map(({ flag, locale, name }) => (
-          <Link
-            href={asPath}
-            locale={locale}
-            title={name}
-            className="text-decoration-none m-1 fs-5"
-          >
-            {flag}
-          </Link>
-        ))}
-      </p>
+      <div className="d-flex justify-content-end gap-3">
+        <UserMenu />
+        <p>
+          {languages.map(({ flag, locale, name }) => (
+            <Link key={locale}
+              href={asPath}
+              locale={locale}
+              title={name}
+              className="text-decoration-none m-1 fs-5"
+            >
+              {flag}
+            </Link>
+          ))}
+        </p>
+      </div>
       <h1 className="display-4">FreeSpeechMeter.com</h1>
       <p className="fs-3">{t('How free is your community?')}</p>
       <hr />

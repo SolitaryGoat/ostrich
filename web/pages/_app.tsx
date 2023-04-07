@@ -1,10 +1,11 @@
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router';
+import { SessionProvider } from 'next-auth/react';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import italianTranslation from '@/i18n/it.json';
-import Layout from '@/components/layout'
-import '@/styles/globals.css'
+import Layout from '@/components/layout';
+import '@/styles/globals.css';
 
 i18n
   .use(initReactI18next)
@@ -21,7 +22,7 @@ const localeLanguageMap = new Map([
   ['en-US', 'en'],
 ]);
 
-const App = ({ Component, pageProps }: AppProps) => {
+const App = ({ Component, pageProps: { session, ...pageProps } }: AppProps) => {
   const { locale, defaultLocale } = useRouter();
   const language = (
     localeLanguageMap.get(locale as string)
@@ -30,9 +31,11 @@ const App = ({ Component, pageProps }: AppProps) => {
   i18n.changeLanguage(language);
 
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <SessionProvider session={session}>
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
+    </SessionProvider>
   )
 };
 
